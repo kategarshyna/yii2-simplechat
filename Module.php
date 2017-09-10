@@ -56,6 +56,8 @@ class Module extends \yii\base\Module implements BootstrapInterface
 
     public $controllerNamespace = 'bubasuma\simplechat\controllers';
 
+    public $urlRules = [];
+    
     /**
      * Initializes simplechat module.
      * This method will initialize the [[db]] property to make sure it refers to a valid DB connection.
@@ -73,7 +75,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
     public function bootstrap($app)
     {
         if ($app instanceof Web) {
-            $app->getUrlManager()->addRules([
+            $app->getUrlManager()->addRules(array_merge([
                 'messages/<contactId:\d+>' => $this->id . '/default/index',
                 'messages' => $this->id . '/default/index',
                 'login-as/<userId:\d+>' => $this->id . '/default/login-as',
@@ -84,7 +86,8 @@ class Module extends \yii\base\Module implements BootstrapInterface
                 'chat/post/message/<contactId:\d+>' => $this->id . '/default/create-message',
                 'chat/unread/conversation/<contactId:\d+>' => $this->id . '/default/mark-conversation-as-unread',
                 'chat/read/conversation/<contactId:\d+>' => $this->id . '/default/mark-conversation-as-read',
-            ], false);
+            ], $this->urlRules), false);
+            
             if (!isset($app->getView()->renderers['twig'])) {
                 $app->getView()->renderers['twig'] = [
                     'class' => 'yii\twig\ViewRenderer',
@@ -97,17 +100,5 @@ class Module extends \yii\base\Module implements BootstrapInterface
                 'module' => $this,
             ];
         }
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function beforeAction($action)
-    {
-        if (!parent::beforeAction($action)) {
-            return false;
-        }
-        $this->db->tablePrefix = $this->id . '_';
-        return true;
     }
 }

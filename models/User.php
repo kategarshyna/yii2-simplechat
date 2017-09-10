@@ -9,6 +9,7 @@ namespace bubasuma\simplechat\models;
 
 use bubasuma\simplechat\migrations\Migration;
 use yii\base\NotSupportedException;
+use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
 use yii\web\IdentityInterface;
@@ -31,7 +32,7 @@ use yii\web\IdentityInterface;
  * @since 1.0
  *
  */
-class User extends ActiveRecord implements IdentityInterface
+class User extends ActiveRecord implements IdentityInterface, UserInterface
 {
     private $_name;
 
@@ -72,7 +73,7 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * @return UserProfile
+     * @return ActiveQuery
      */
     public function getProfile()
     {
@@ -105,15 +106,6 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return $this->profile->avatar;
     }
-
-    /**
-     * @return static[]
-     */
-    public static function getAll()
-    {
-        return static::find()->with('profile')->all();
-    }
-
 
     /**
      * @inheritDoc
@@ -154,5 +146,10 @@ class User extends ActiveRecord implements IdentityInterface
     public function validateAuthKey($authKey)
     {
         return true;
+    }
+    
+    public function setCreatedAt($value)
+    {
+        $this->setAttribute('created_at', $value);
     }
 }

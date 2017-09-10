@@ -8,8 +8,8 @@ namespace bubasuma\simplechat\controllers;
 
 use bubasuma\simplechat\models\Conversation;
 use bubasuma\simplechat\models\Message;
-use bubasuma\simplechat\models\User;
 use bubasuma\simplechat\Module;
+use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 use yii\web\Controller;
@@ -23,7 +23,6 @@ use yii\web\NotFoundHttpException;
  * @author Buba Suma <bubasuma@gmail.com>
  * @since 1.0
  *
- * @property-read User user
  */
 class DefaultController extends Controller
 {
@@ -37,11 +36,6 @@ class DefaultController extends Controller
      * @var Module
      */
     public $module;
-
-    /**
-     * @var User
-     */
-    private $_user;
 
     public function behaviors()
     {
@@ -64,7 +58,7 @@ class DefaultController extends Controller
 
     public function actionIndex($contactId = null)
     {
-        $user = $this->user;
+        $user = $this->getUser();
         if ($contactId == $user->id) {
             throw new ForbiddenHttpException('You cannot open this conversation');
         }
@@ -122,17 +116,6 @@ class DefaultController extends Controller
         return Conversation::className();
     }
 
-    /**
-     * @return User
-     */
-    public function getUser()
-    {
-        if (null === $this->_user) {
-            $this->_user = User::findIdentity(\Yii::$app->session->get($this->module->id . '_user', 1));
-        }
-        return $this->_user;
-    }
-
     public function setUser($userId)
     {
         \Yii::$app->session->set($this->module->id . '_user', $userId);
@@ -141,7 +124,10 @@ class DefaultController extends Controller
     public function getUsers(array $except = [])
     {
         $users = [];
-        foreach (User::getAll() as $userItem) {
+        $userClass = $this->getUser();
+        /** @var ActiveRecord $userClass */
+        $userClass = $userClass::className();
+        foreach ($userClass::find()->with('profile')->all() as $userItem) {
             $users[] = [
                 'label' => $userItem->name,
                 'url' => Url::to(['login-as', 'userId' => $userItem->id]),

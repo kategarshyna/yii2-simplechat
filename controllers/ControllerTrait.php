@@ -7,8 +7,8 @@
 namespace bubasuma\simplechat\controllers;
 
 use bubasuma\simplechat\DataProvider;
-use bubasuma\simplechat\db\Conversation;
-use bubasuma\simplechat\db\Message;
+use bubasuma\simplechat\models\Conversation;
+use bubasuma\simplechat\models\Message;
 use yii\base\NotSupportedException;
 use yii\filters\ContentNegotiator;
 use yii\web\IdentityInterface;

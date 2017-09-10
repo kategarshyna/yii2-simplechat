@@ -21,7 +21,7 @@ use yii\db\ActiveRecord;
  * @author Buba Suma <bubasuma@gmail.com>
  * @since 1.0
  */
-class UserProfile extends ActiveRecord
+class UserProfile extends ActiveRecord implements UserProfileInterface
 {
     /**
      * @inheritDoc
@@ -39,5 +39,25 @@ class UserProfile extends ActiveRecord
         return [
             [$this->attributes(), 'safe']
         ];
+    }
+    
+    public function getId()
+    {
+        return $this->id;
+    }
+    
+    public function getFirstName()
+    {
+        return $this->first_name;
+    }
+    
+    public function getLastName()
+    {
+        return $this->last_name;
+    }
+    
+    public function getAvatar()
+    {
+        return $this->avatar;
     }
 }

@@ -22,6 +22,7 @@ use yii\helpers\Url;
  */
 class Conversation extends \bubasuma\simplechat\db\Conversation
 {
+    
     /**
      * @return ActiveQuery
      */

@@ -17,9 +17,9 @@ namespace bubasuma\simplechat\migrations;
  */
 class Migration extends \yii\db\Migration
 {
-    const TABLE_USER = '{{%user}}';
-    const TABLE_USER_PROFILE = '{{%user_profile}}';
-    const TABLE_MESSAGE = '{{%message}}';
+    const TABLE_USER = '{{%chat_user}}';
+    const TABLE_USER_PROFILE = '{{%chat_user_profile}}';
+    const TABLE_MESSAGE = '{{%chat_message}}';
 
     public function getTableOptions()
     {

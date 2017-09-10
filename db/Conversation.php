@@ -29,12 +29,15 @@ use yii\db\Expression;
  */
 class Conversation extends ActiveRecord
 {
+    /** @var  Message */
+    public static $messageClassName = Message::class;
+    
     /**
      * @return \yii\db\ActiveQuery
      */
     public function getLastMessage()
     {
-        return $this->hasOne(Message::className(), ['id' => 'last_message_id']);
+        return $this->hasOne(self::$messageClassName, ['id' => 'last_message_id']);
     }
 
     /**
@@ -42,7 +45,7 @@ class Conversation extends ActiveRecord
      */
     public function getNewMessages()
     {
-        return $this->hasMany(Message::className(), ['sender_id' => 'contact_id', 'receiver_id' => 'user_id'])
+        return $this->hasMany(self::$messageClassName, ['sender_id' => 'contact_id', 'receiver_id' => 'user_id'])
             ->andOnCondition(['is_new' => true]);
     }
 
@@ -134,8 +137,10 @@ class Conversation extends ActiveRecord
      */
     public static function unread($userId, $contactId)
     {
+        $messageClassName = self::$messageClassName;
+        
         /** @var Message $message */
-        $message = Message::find()
+        $message = $messageClassName::find()
             ->where(['sender_id' => $contactId, 'receiver_id' => $userId, 'is_deleted_by_receiver' => false])
             ->orderBy(['id' => SORT_DESC])
             ->limit(1)
@@ -153,7 +158,8 @@ class Conversation extends ActiveRecord
      */
     public static function tableName()
     {
-        return Message::tableName();
+        $messageClassName = self::$messageClassName;
+        return $messageClassName::tableName();
     }
 
 
