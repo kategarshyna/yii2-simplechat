@@ -64,10 +64,10 @@ class DefaultController extends Controller
         }
 
         if (isset($contactId)) {
-            $current = new Conversation(['user_id' => $user->id, 'contact_id' => $contactId]);
+            $current = new $this->conversationClass(['user_id' => $user->id, 'contact_id' => $contactId]);
         }
 
-        /** @var $conversationClass Conversation */
+        /** @var $conversationClass \bubasuma\simplechat\models\Conversation */
         $conversationClass = $this->conversationClass;
         $conversationDataProvider = $conversationClass::get($user->id, 8);
 

@@ -140,12 +140,4 @@ trait ControllerTrait
     {
         return Message::className();
     }
-
-    /**
-     * @return string
-     */
-    public function getConversationClass()
-    {
-        return Conversation::className();
-    }
 }

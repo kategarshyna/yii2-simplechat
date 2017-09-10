@@ -188,14 +188,6 @@ class MessageController extends Controller
     {
         return Message::className();
     }
-
-    /**
-     * @return string
-     */
-    public function getConversationClass()
-    {
-        return Conversation::className();
-    }
 }
 ```
 >Note: If you are using this extension in your frontend application, you can find the usage of widgets  in `index.twig`.
