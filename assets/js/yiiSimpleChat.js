@@ -392,15 +392,17 @@
                     $('#msg-form').trigger('submit');
                 });
 
-                // load new messages every 10 seconds
-                setInterval(function () {
-                    self.messenger.yiiSimpleChatMessages('load', 'new');
-                }, 10000);
+                if (parseInt(self.messenger.data('disableAjaxInterval'))) {
+                    // load new messages every 10 seconds
+                    setInterval(function () {
+                        self.messenger.yiiSimpleChatMessages('load', 'new');
+                    }, 10000);
 
-                // load new conversations every 15 seconds
-                setInterval(function () {
-                    self.conversations.yiiSimpleChatConversations('load', 'new');
-                }, 15000);
+                    // load new conversations every 15 seconds
+                    setInterval(function () {
+                        self.conversations.yiiSimpleChatConversations('load', 'new');
+                    }, 15000);
+                }
             });
         }
     };
