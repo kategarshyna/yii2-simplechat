@@ -35,7 +35,8 @@
             complete: 'complete.load',
             error: 'error.load',
             success: 'success.load'
-        }
+        },
+        unreadChange: 'unreadChange'
     };
 
     var defaults = {
@@ -114,7 +115,9 @@
                 dataType: 'JSON',
                 url: widget.current.unreadUrl,
                 type: widget.settings.unreadMethod
-            }, settings || {}));
+            }, settings || {})).always(function () {
+                $chat.trigger(events.unreadChange);
+            });
         },
 
         read: function (settings) {
@@ -124,7 +127,9 @@
                 dataType: 'JSON',
                 url: widget.current.readUrl,
                 type: widget.settings.readMethod
-            }, settings || {}));
+            }, settings || {})).always(function () {
+                $chat.trigger(events.unreadChange);
+            });
         },
 
         delete: function (settings) {
@@ -134,7 +139,9 @@
                 dataType: 'JSON',
                 url: widget.current.deleteUrl,
                 type: widget.settings.deleteMethod
-            }, settings || {}));
+            }, settings || {})).always(function () {
+                $chat.trigger(events.unreadChange);
+            });
         },
 
         append: function (data) {
